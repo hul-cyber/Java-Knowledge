@@ -1,9 +1,15 @@
 {
     "cSpell.words": [
+        "address",
+        "datagram",
+        "datagram packet",
+        "inet",
+        "inet address",
         "itcast",
         "mkdir",
         "mkdir mkdirs",
         "mkdirs",
+        "packet",
         "printf",
         "println",
         "serializable",
