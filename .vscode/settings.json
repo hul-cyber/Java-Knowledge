@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "address",
+        "arraycopy",
         "datagram",
         "datagram packet",
         "downcasting",
@@ -13,6 +14,7 @@
         "mkdir",
         "mkdir mkdirs",
         "mkdirs",
+        "mpptest",
         "of",
         "of epoch milli",
         "outter",
