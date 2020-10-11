@@ -1,5 +1,8 @@
 # String
 本文的内容主要来源于:https://how2playlife.com/2019/09/03/3string%E5%92%8C%E5%8C%85%E8%A3%85%E7%B1%BB/
+以及
+https://juejin.im/entry/6844903544999395342
+如有侵权,请联系作者。
 
 ## String概述
 
@@ -29,6 +32,55 @@ String s3 = new String(“mpptest”);
 
 char[] helloArray = { 'r', 'u', 'n', 'o', 'o', 'b'};    String helloString = new String(helloArray);
 ``` 
+下面我们来详细总结一下创建`String`对象的方法,如下图所示:
+```java
+//使用 ” ” 双引号创建 ： 
+String s1 = “first”;
+//使用字符串连接符拼接 ： 
+String s2=”se”+”cond”;
+//使用字符串加引用拼接 ： 
+String s12=”first”+s2;
+//使用new String(“”)创建 ： 
+String s3 = new String(“three”);
+//使用new String(“”)拼接 ： 
+String s4 = new String(“fo”)+”ur”;
+//使用new String(“”)拼接 ： 
+String s5 = new String(“fo”)+new String(“ur”);
+```
+![](2020-10-11-15-15-14.png)
+对于上面的解析:
+Java 会确保一个字符串常量只有一个拷贝。
+1. s1 ： 中的”first” 是字符串常量，在编译期就被确定了，先检查字符串常量池中是否含有”first”字符串,若没有则添加”first”到字符串常量池中，并且直接指向它。所以s1直接指向字符串常量池的”first”对象。
+
+2. s2 ： “se”和”cond”也都是字符串常量，当一个字符串由多个字符串常量连接而成时，它自己肯定也是字符串常量，所以s2也同样在编译期就被解析为一个字符串常量，并且s2是常量池中”second”的一个引用。
+
+3. s12 ： JVM对于字符串引用，由于在字符串的”+”连接中，有字符串引用存在，而引用的值在程序编译期是无法确定的，即("first"+s2)无法被编译器优化，只有在程序运行期来动态分配使用StringBuilder连接后的新String对象赋给s12。
+(编译器创建一个StringBuilder对象，并调用append()方法，最后调用toString()创建新String对象，以包含修改后的字符串内容)
+
+4. s3 ： 用new String() 创建的字符串不是常量，不能在编译期就确定，所以new String() 创建的字符串不放入常量池中，它们有自己的地址空间。
+但是”three”字符串常量在编译期也会被加入到字符串常量池（如果不存在的话）
+
+5. s4 ： 同样不能在编译期确定，但是”fo”和”ur”这两个字符串常量也会添加到字符串常量池中，并且在堆中创建String对象。（字符串常量池并不会存放”four”这个字符串）
+
+6. s5 ： 原理同s4。
+
+### 关于字符串的`intern()`方法
+```java
+String s = new String("1");
+s.intern();
+String s2 = "1";
+System.out.println(s == s2);
+//false
+String s3 = new String("1") + new String("1") ;
+s3.intern();
+String s4 = "11";
+System.out.println(s3 == s4);
+//true
+```
+对上面方法的分析,根据我们上面关于创建字符串的分析,`String s = new String("1")`,会在堆上创建一个对象,同时会检查在常量池中有没有该对象,如果没有的话,会在常量池中生成"1",而对于`s.intern()`方法来说,会检查在常量池有没有该常量,如果有的话,就返回在常量池中的引用,我们使用`String s2 = "1";`,会检查在常量池中有没有,如果有的话,则直接将常量池中的引用赋值给`s2`.因为s是指向堆中的,但是s2是指向常量池中,所以肯定不相同.
+
+对于`String s3 = new String("1") + new String("1");`,会在堆中创建一个"11"对象,同时也会在常量池中创建"1"这个对象,对于`s.intern()`方法来说,同样会执行上面的步骤,即检查在常量池中有没有"11"这个对象,如果没有的话,在JDK1.7及以前,会将字符串拷贝到常量池,但是在JDK1.8及以后,会将该引用返回到常量池中,也就是说,当我们在`String s4 = "11"`的时候,会发现在常量池中尽管没有"11",但是有指向"11"的引用,我们会将这个引用给到`s4`,这样的话,`s3`和`s4`就会相等,但是因为在JDK1.7及以前,因为`intern()`还是会在常量池中创建相应的对象,所以`s3`和`s4`不会相等。
+
 ### 字符串的常见方法
 ![alt text](https://camo.githubusercontent.com/5b0dc9c75147292d4bcc06caf0e875ba94ed5279/68747470733a2f2f696d67323031382e636e626c6f67732e636f6d2f626c6f672f3731303431322f3230313930322f3731303431322d32303139303231333232303233373136392d313936363730353432302e706e67 "title")
 
