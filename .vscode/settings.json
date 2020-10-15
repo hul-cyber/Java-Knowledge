@@ -6,6 +6,7 @@
         "datagram packet",
         "downcasting",
         "epoch",
+        "hidetag",
         "inet",
         "inet address",
         "instanceof",
@@ -22,6 +23,7 @@
         "packet",
         "printf",
         "println",
+        "rtti",
         "serializable",
         "typora",
         "upcasting"
