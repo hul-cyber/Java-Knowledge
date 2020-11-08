@@ -12,6 +12,9 @@
         "instanceof",
         "invokespecial",
         "itcast",
+        "itranswarp",
+        "javax",
+        "learnjava",
         "milli",
         "mkdir",
         "mkdir mkdirs",
@@ -26,6 +29,7 @@
         "rtti",
         "serializable",
         "typora",
-        "upcasting"
+        "upcasting",
+        "xiao"
     ]
 }
