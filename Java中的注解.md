@@ -357,3 +357,16 @@ void check(Person person) throws IllegalArgumentException, ReflectiveOperationEx
 
 对`JavaBean`的属性值按规则进行检查；
 JUnit会自动运行`@Test标记的测试方法`。
+
+关于注解的优势
+> 如上文例子所示，如果Person类包含了name、city等类似的n个String类型的成员
+如果你在构造方法里检查，需要写n个判断
+如果用注解的话，只需要在每个成员前加上注解，然后写一个检查方法就可以检查所有的成员是否满足条件
+还有就是如果在构造方法里判断的话，实例化后用setter赋值也是没法check的，除非在每个setter里也写判断
+这样写代码量肯定剧增，而且除此之外如果想要修改条件的话，需要在构造方法和setter里分别去改，不如注解修改条件方便
+以上仅为个人理解，如有不对欢迎指正.
+
+> 注解，便于底层框架，对多个类的成员变量进行相同规则的check逻辑
+比如要写多个类，Person、Address、Program等，每个类的String类成员变量，都要进行长度的校验。
+在每个构造方法里单独处理成员变量的校验，那每个类都要写一遍
+但用注解，只写一个check，然后每个类的成员变量在定义时，加上注解就好了
