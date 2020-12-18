@@ -370,3 +370,68 @@ JUnit会自动运行`@Test标记的测试方法`。
 比如要写多个类，Person、Address、Program等，每个类的String类成员变量，都要进行长度的校验。
 在每个构造方法里单独处理成员变量的校验，那每个类都要写一遍
 但用注解，只写一个check，然后每个类的成员变量在定义时，加上注解就好了
+
+## 注解@Constraint
+@Constraint的定义如下:
+```java
+@Documented
+@Target({ElementType.ANNOTATION_TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Constraint {
+    Class<? extends ConstraintValidator<?, ?>>[] validatedBy();
+}
+```
+通过`@Target({ElementType.ANNOTATION_TYPE})`可知,该注解只能够声明在注解,该注解是用来约束自定义注解的。在**自定义验证注解**的时候需要用到,其实已经有一些基本验证注解供我们使用:
+```
+@Null 被注释的元素必须为 null
+@NotNull 被注释的元素必须不为 null
+@AssertTrue 被注释的元素必须为 true
+@AssertFalse 被注释的元素必须为 false
+@Min(value) 被注释的元素必须是一个数字，其值必须大于等于指定的最小值
+@Max(value) 被注释的元素必须是一个数字，其值必须小于等于指定的最大值
+@DecimalMin(value) 被注释的元素必须是一个数字，其值必须大于等于指定的最小值
+@DecimalMax(value) 被注释的元素必须是一个数字，其值必须小于等于指定的最大值
+@Size(max, min) 被注释的元素的大小必须在指定的范围内
+@Digits (integer, fraction) 被注释的元素必须是一个数字，其值必须在可接受的范围内
+@Past 被注释的元素必须是一个过去的日期
+@Future 被注释的元素必须是一个将来的日期
+@Pattern(value) 被注释的元素必须符合指定的正则表达式
+```
+在注解`@Constraint`定义中有`Class<? extends ConstraintValidator<?, ?>>[] validatedBy();`,也就是我们在使用注解`@Constraint`时需要传入一个类型为`Class<? extends ConstraintValidator<?, ?>>`的数组.
+比如下面的例子:
+```java
+@Target({TYPE, ANNOTATION_TYPE, FIELD})
+@Retention(RUNTIME)
+@Constraint(validatedBy = {IdValidator.class})
+public @interface IdValid {
+
+    boolean required() default true;
+
+    String message() default Messages.ID_LENGTH_THIRTY_TWO;
+
+    String value() default "";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}
+```
+我们定义了一个注解为`@IdValid`,该注解传入的`validateBy`为`IdValidator.class`,也就是我们使用类`IdValidator`进行相应的验证,其中类`IdValidator`为：
+```java
+public class IdValidator implements ConstraintValidator<IdValid, String> {
+
+    @Override
+    public void initialize(IdValid idValid) {
+
+    }
+
+    @Override
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        if (value == null || StringUtils.isBlank(value) || StringUtils.isEmpty(value.trim()) || value.length() != Constants.THIRTY_TWO) {
+            return false;
+        }
+        return true;
+    }
+}
+```
+也就是该类必须要要实现接口`ConstraintValidator<IdValid, String>`,其中在函数`isValid`进行相应的验证,其中传入的`value`参数就是要验证的值。

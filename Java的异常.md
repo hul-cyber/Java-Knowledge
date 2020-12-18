@@ -174,7 +174,25 @@ try {
 }
 ```
 
-如果`try`里面的代码出现了异常，那么抛出的异常会被`catch`捕获到，`catch(异常类名 对象名)`这里的对象就指向该异常，我们可以进行相应的处理，这里需要注意的是：程序并不会因为抛出了异常而中断，因为异常已经被捕获了，会继续往下执行。如果我们使用的是向上抛出异常的方式，我们程序在抛出异常的地方就会中断，不会继续往下执行。但是这里需要注意的事情为:
+如果`try`里面的代码出现了异常，那么抛出的异常会被`catch`捕获到，`catch(异常类名 对象名)`这里的对象就指向该异常，我们可以进行相应的处理，这里需要注意的是：程序并不会因为抛出了异常而中断，因为异常已经被捕获了，会继续往下执行。**如果我们使用的是向上抛出异常的方式，我们程序在抛出异常的地方就会中断，不会继续往下执行。**
+
+```java
+public static void main(String[] args) throws Exception {
+    throw new Exception("A exception");
+    System.out.println("hello");
+}
+```
+但是我们使用`try-catch`可以使代码继续执行:
+```java
+try {
+    throw new Exception("A exception");
+} catch (Exception e) {
+    e.printStackTrace();
+}
+System.out.println("hello");
+```
+上面的代码会输出`hello`.
+但是这里需要注意的事情为:
 ```java
     public static void main(String[] args) {
         System.out.println("开始");
@@ -190,7 +208,16 @@ try {
 ```
 对于上面的例子,我们可以知道,在`try`下面的代码块中,在语句`System.out.println(a[3])`会抛出异常`ArrayIndexOutOfBoundsException`,事实上,抛出该异常之后,`try`代码块中的剩余内容就不会再执行了,也就是不会再执行`System.out.println("99999999");`语句。上面提到的会继续往下执行,指的是`try-catch`代码块下面的语句`System.out.println("结束");`会继续执行。下面引出关键字`finally`,首先有一个比较大的疑问,就是如果我们使用`catch`捕获了异常之后,下面的程序依旧还会执行,而关键字`finally`的作用的确保在`finally`代码块中的代码必须执行。那么我可以给出这样的解释,就是我们有可能不能够将代码中出现的所有异常全部`catch`到,或者我们并不想处理,这样的情况下,的确会出现后面代码不执行的情况。这样的话,我们给出下面的分析:
 如果我们可以捕获到所有的异常的话,那么我们就应该能够完全省略掉下面的`finally`关键字,因为下面的语句肯定会执行,所以我们完全没有必要放到`finally`代码块里。
-但是我们没有抛出所有异常的情况下,`finally`子句肯定会保证代码的执行。
+但是我们捕获所有异常的情况下,有异常抛出,`finally`子句肯定会保证代码的执行。
+```java
+    try {
+        throw new Exception("A exception");
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        System.out.println("hello");
+    }
+```
 还有一点我们需要注意的是:
 **try语句可以没有catch子句,只有finally子句,当然,也可以只有catch子句,而没有finally子句。**
 根据我们之前的描述，我们应该注意的是：上面的异常我们应该成为检查型异常，对于错误和运行时异常，我们往往不会将它们抛出来，错误，我们控制不了，但是对于运行时异常来说，我们完全可以控制，我们可以通过修正代码的方式来避免异常的存在。事实上，对于运行时异常来说，因为我们一般不捕获以及不显式抛出，最后他们会隐式地从`main`方法中抛给JVM。

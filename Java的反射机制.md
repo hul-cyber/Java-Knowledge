@@ -99,7 +99,7 @@ boolean b4 = n.getClass() == Number.class; // false，因为Integer.class!=Numbe
 
 通常情况下，我们应该用`instanceof`判断数据类型，因为面向抽象编程的时候，我们不关心具体的子类型。只有在需要精确判断一个类型是不是某个`class`的时候，我们才使用`==`判断`class`实例。
 
-因为反射的目的是为了获得某个实例的信息。因此，当我们拿到某个`Object`实例时，我们可以通过反射获取该`Object`的`class`信息：
+**因为反射的目的是为了获得某个实例的信息。因此，当我们拿到某个`Object`实例时，我们可以通过反射获取该`Object`的`class`信息**：
 ```java
 void printObjectInfo(Object obj) {
     Class cls = obj.getClass();
@@ -694,3 +694,55 @@ public class HelloDynamicProxy implements Hello {
 ### 小结
 `Java`标准库提供了动态代理功能，允许在运行期动态创建一个接口的实例；
 动态代理是通过`Proxy`创建代理对象，然后将接口方法“代理”给`InvocationHandler`完成的。
+
+## 反射的作用
+1. 反射的核心是 JVM 在运行时才动态加载类或调用方法/访问属性，它不需要事先（写代码的时候或编译期）知道运行对象是谁。我们可以举个例子：
+```java
+public class Demo {
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        System.out.println("请输入要加载的类名");
+        String className = in.nextLine();
+        try {
+            Class clazz = Class.forName(className);
+            // 根据无参构造方法创建对象
+            Object object = clazz.newInstance();
+            // 获取类中的方法
+            Method[] methods = clazz.getDeclaredMethods();
+            for (Method method : methods) {
+                method.invoke(object);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+public class A {
+
+    private int a = 3;
+
+    public void getA() {
+        System.out.println(a);
+    }
+}
+
+public class B {
+    private int b = 5;
+
+    public void getB() {
+        System.out.println(this.b);
+    }
+}
+```
+如果输入要加载的类名是`A`,那么就会在运行的时候动态加载类A或调用方法/访问属性,**我们不需要知道在写代码或者编译的时候知道运行的对象是谁。** 
+其实我这里一共有两个疑问:1. 我们真的不知道运行的对象是谁吗？某种意义上我们是知道的,比如我们在程序中的某处要使用一个数据库驱动,我们可能不知道是使用`MySql`还是`Oracle`的数据库驱动,但我们肯定知道这里肯定需要一个数据库驱动,也就是是说我们不知道运行的是`MySql`驱动还是`Oracle`驱动,但我们知道运行的肯定是一个数据库驱动.这里也就进一步说明了接口的一个重要作用,`MySql`和`Oracle`的驱动实现相同的接口,实现的是相同的方法,所以我们写这段代码的不需要知道使用的是哪个驱动,也能够正常地写代码,因为这两个驱动实现的方法是相同,当运行的时候,我们再加载相应的驱动。
+
+## 
