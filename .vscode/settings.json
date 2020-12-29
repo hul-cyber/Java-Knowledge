@@ -1,7 +1,14 @@
 {
     "cSpell.words": [
+        "CPUs",
+        "Interruptibly",
+        "JAXP",
+        "JVMs",
+        "SNMP",
+        "Servlet",
         "address",
         "arraycopy",
+        "bytecode",
         "clazz",
         "datagram",
         "datagram packet",
@@ -14,6 +21,8 @@
         "invokespecial",
         "itcast",
         "itranswarp",
+        "javac",
+        "javadoc",
         "javax",
         "learnjava",
         "milli",
