@@ -1,3 +1,34 @@
+<!-- TOC -->
+
+- [String](#string)
+  - [String概述](#string概述)
+  - [String基本用法](#string基本用法)
+    - [字符串的创建](#字符串的创建)
+    - [关于字符串的`intern()`方法](#关于字符串的intern方法)
+    - [字符串的常见方法](#字符串的常见方法)
+    - [求字符或子串第一次/最后一次在字符串中出现的位置： indexOf() lastIndexOf()](#求字符或子串第一次最后一次在字符串中出现的位置-indexof-lastindexof)
+    - [字符串与byte数组间的相互转换](#字符串与byte数组间的相互转换)
+    - [==运算符和equals之间的区别](#运算符和equals之间的区别)
+    - [字符串的不可变性](#字符串的不可变性)
+    - [String的连接](#string的连接)
+    - [String、String builder和String buffer的区别](#stringstring-builder和string-buffer的区别)
+      - [String和StringBuffer的详解，联系和区别](#string和stringbuffer的详解联系和区别)
+      - [StringBuffer与StringBuilder](#stringbuffer与stringbuilder)
+  - [String类的源码分析](#string类的源码分析)
+    - [String类型的intern](#string类型的intern)
+    - [String类的equals](#string类的equals)
+    - [StringBuffer 和 StringBuilder](#stringbuffer-和-stringbuilder)
+    - [append方法](#append方法)
+    - [扩容](#扩容)
+    - [删除](#删除)
+  - [String和JVM的关系](#string和jvm的关系)
+    - [Java栈、Java堆、方法区、常量池](#java栈java堆方法区常量池)
+    - [String为什么不可变？](#string为什么不可变)
+    - [不可变的好处](#不可变的好处)
+    - [String常用工具类](#string常用工具类)
+
+<!-- /TOC -->
+
 # String
 本文的内容主要来源于:https://how2playlife.com/2019/09/03/3string%E5%92%8C%E5%8C%85%E8%A3%85%E7%B1%BB/
 以及
@@ -42,7 +73,7 @@ String s2=”se”+”cond”;
 String s12=”first”+s2;
 //使用new String(“”)创建 ： 
 String s3 = new String(“three”);
-//使用new String(“”)拼接 ： 
+//使用new String(“”)和字符串拼接 ： 
 String s4 = new String(“fo”)+”ur”;
 //使用new String(“”)拼接 ： 
 String s5 = new String(“fo”)+new String(“ur”);
@@ -69,7 +100,9 @@ Java 会确保一个字符串常量只有一个拷贝。
 **在 JAVA 语言中有8中基本类型和一种比较特殊的类型`String`。这些类型为了使他们在运行过程中速度更快，更节省内存，都提供了一种常量池的概念。**常量池就类似一个JAVA系统级别提供的缓存。
 8种基本类型的常量池都是系统协调的，`String`类型的常量池比较特殊。它的主要使用方法有两种：
 > 直接使用双引号声明出来的`String`对象会直接存储在常量池中。
-> 如果不是用双引号声明的`String`对象，可以使用`String`提供的`intern`方法。`intern` 方法会从字符串常量池中查询当前字符串是否存在，若不存在就会将当前字符串放入常量池中(JDK 1.7及以前 和 JDK 1.7之后这个函数发生了相应的变化).
+> 如果不是用双引号声明的`String`对象，可以使用`String`提供的`intern`方法。`intern` 方法会从字符串常量池中查询当前字符串是否存在，若不存在就会将当前字符串放入常量池中(`JDK 6`及以前与`JDK 7`及以后并不相同).
+
+具体内容可以参考[深入解析String#intern](https://tech.meituan.com/2014/03/06/in-depth-understanding-string-intern.html)
 
 ```java
 String s = new String("1");
@@ -108,7 +141,6 @@ public class StringDemo1 {
  }
 }
 ```
-
 ### 求字符或子串第一次/最后一次在字符串中出现的位置： indexOf() lastIndexOf()
 ```java
 String str = new String("赵客缦胡缨 吴钩胡缨霜雪明");
