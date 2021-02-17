@@ -132,6 +132,9 @@ double dn = Double.MIN_VALUE;
 3. 最大值是 \uffff（即为65,535）；
 4. char 数据类型可以储存任何字符；
 
+char是Java中的保留字，与别的语言不同的是，**char在Java中是16位的，因为Java用的是Unicode。** 不过8位的ASCII码包含在Unicode中，是从0~127的。
+(可以想象，如果有一种编码，将世界上所有的符号都纳入其中。每一个符号都给予一个独一无二的编码，那么乱码问题就会消失。这就是 Unicode，就像它的名字都表示的，这是一种所有符号的编码。)
+
 例子：char letter = ‘A’;
 
 ### boolean类型
@@ -139,6 +142,7 @@ double dn = Double.MIN_VALUE;
 2. 只有两个取值：true 和 false；
 3. 这种类型只作为一种标志来记录 true/false 情况；
 4. 默认值是 false；
+> The boolean data type has only two possible values: true and false. Use this data type for simple flags that track true/false conditions. This data type represents one bit of information, but its "size" isn't something that's precisely defined.
 
 例子：boolean one = true
 
