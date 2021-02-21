@@ -304,7 +304,7 @@ for(int i = 0; i < 100; i++)
 第二行代码其实是`String i1 = (new StringBuilder()).append(i).toString();`，首先创建一个`StringBuilder`对象，然后再调用`append`方法，再调用`toString`方法。
 
 ## `switch`对`String`的支持
-`Java 7`中，`switch`的参数可以是`String`类型了，这对我们来说是一个很方便的改进。到目前为止`switch`支持这样几种数据类型：`byte` `short` `int` `char` `String`。
+`Java 7`中，`switch`的参数可以是`String`类型了，这对我们来说是一个很方便的改进。到目前为止`switch`支持这样几种数据类型：`byte` `short` `int` `char` `String`(事实上，前面几种类型的包装类型也全都支持，还支持枚举类型)。
 
 ### `switch`对`int`的支持
 ```java
